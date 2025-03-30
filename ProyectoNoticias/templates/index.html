@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Noticias</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body { padding-top: 2rem; }
+    .result-item { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4">Buscar Noticias</h1>
+    <div class="form-group">
+      <input type="text" id="inputTema" class="form-control" placeholder="Ejemplo: economía">
+    </div>
+    <button onclick="buscarNoticias()" class="btn btn-primary mb-3">Buscar</button>
+    <button onclick="descargarJSON()" class="btn btn-secondary mb-3">Descargar JSON</button>
+    <hr>
+    <div id="resultados"></div>
+  </div>
+  
+  <script>
+    async function buscarNoticias() {
+      const tema = document.getElementById('inputTema').value.trim();
+      if (!tema) {
+        alert('Debes ingresar un tema');
+        return;
+      }
+      const response = await fetch('/buscar_noticias?tema=' + encodeURIComponent(tema));
+      const data = await response.json();
+      
+      const divRes = document.getElementById('resultados');
+      divRes.innerHTML = "<h3>Resultados para: " + data.tema + "</h3>";
+  
+      if (data.noticias && data.noticias.length > 0) {
+        let html = "<div class='list-group'>";
+        data.noticias.forEach(n => {
+          html += "<div class='list-group-item result-item'>" +
+                    "<h5 class='mb-1'>" + n.titulo + "</h5>" +
+                    "<p class='mb-1'><strong>Fuente:</strong> " + n.fuente + "</p>" +
+                    "<p class='mb-1'><strong>Fecha:</strong> " + n.fecha + "</p>" +
+                    "<p class='mb-1'><strong>Resumen:</strong> " + (n.resumen || "(sin resumen)") + "</p>" +
+                  "</div>";
+        });
+        html += "</div>";
+        divRes.innerHTML += html;
+      } else {
+        divRes.innerHTML += "<p>No se encontraron noticias.</p>";
+      }
+    }
+  
+    function descargarJSON() {
+      const tema = document.getElementById('inputTema').value.trim();
+      if (!tema) {
+        alert('Debes ingresar un tema');
+        return;
+      }
+      window.location.href = '/descargar_noticias?tema=' + encodeURIComponent(tema);
+    }
+  </script>
+</body>
+</html>
