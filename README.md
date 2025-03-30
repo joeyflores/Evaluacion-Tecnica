@@ -134,7 +134,7 @@ GET /buscar_noticias?tema=<palabra_clave>
 GET /descargar_noticias?tema=<palabra_clave>
 ```
 
-Este endpoint fuerza la descarga de un archivo JSON (noticias.json) que contiene la información de las noticias filtradas (sin el campo "resumen").
+Este endpoint descarga un archivo JSON (noticias.json) que contiene la información de las noticias filtradas (sin el campo "resumen").
 
 ## Notas Adicionales
 
@@ -147,5 +147,3 @@ El proyecto está dividido en varios scripts:
 - `cargar_datos.py` para la importación de datos desde Excel.
 - `preprocesar_texto.py` para la normalización y cálculo de frecuencias.
 - `app.py` para la API y la interfaz web (con la plantilla en `templates/index.html`).
-
-- Se recomienda utilizar un entorno virtual para aislar las dependencias del proyecto y evitar conflictos con otras instalaciones.
